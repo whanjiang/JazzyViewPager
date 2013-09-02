@@ -28,7 +28,7 @@ public class JazzyViewPager extends ViewPager {
 	private boolean mOutlineEnabled = false;
 	public static int sOutlineColor = Color.WHITE;
 	private TransitionEffect mEffect = TransitionEffect.Standard;
-	
+
 	private HashMap<Integer, Object> mObjs = new LinkedHashMap<Integer, Object>();
 
 	private static final float SCALE_MAX = 0.5f;
@@ -91,7 +91,7 @@ public class JazzyViewPager extends ViewPager {
 	public void setFadeEnabled(boolean enabled) {
 		mFadeEnabled = enabled;
 	}
-	
+
 	public boolean getFadeEnabled() {
 		return mFadeEnabled;
 	}
@@ -164,7 +164,7 @@ public class JazzyViewPager extends ViewPager {
 		GOING_LEFT,
 		GOING_RIGHT
 	}
-	
+
 //	public void reset() {
 //	resetPrivate();
 //	int curr = getCurrentItem();
@@ -206,7 +206,7 @@ public class JazzyViewPager extends ViewPager {
 				ViewHelper.getRotationY(v) + "), TRANS (" +
 				ViewHelper.getTranslationX(v) + ", " +
 				ViewHelper.getTranslationY(v) + "), SCALE (" +
-				ViewHelper.getScaleX(v) + ", " + 
+				ViewHelper.getScaleX(v) + ", " +
 				ViewHelper.getScaleY(v) + "), ALPHA " +
 				ViewHelper.getAlpha(v));
 	}
@@ -220,7 +220,7 @@ public class JazzyViewPager extends ViewPager {
 		}
 	}
 
-	protected void animateTablet(View left, View right, float positionOffset) {		
+	protected void animateTablet(View left, View right, float positionOffset) {
 		if (mState != State.IDLE) {
 			if (left != null) {
 				manageLayer(left, true);
@@ -236,7 +236,7 @@ public class JazzyViewPager extends ViewPager {
 			if (right != null) {
 				manageLayer(right, true);
 				mRot = -30.0f * (1-positionOffset);
-				mTrans = getOffsetXForRotation(mRot, right.getMeasuredWidth(), 
+				mTrans = getOffsetXForRotation(mRot, right.getMeasuredWidth(),
 						right.getMeasuredHeight());
 				ViewHelper.setPivotX(right, right.getMeasuredWidth()*0.5f);
 				ViewHelper.setPivotY(right, right.getMeasuredHeight()*0.5f);
@@ -363,7 +363,7 @@ public class JazzyViewPager extends ViewPager {
 			}
 		}
 	}
-	
+
 	private void animateFlipVertical(View left, View right, float positionOffset, int positionOffsetPixels) {
 		if(mState != State.IDLE) {
 			if (left != null) {
@@ -399,7 +399,7 @@ public class JazzyViewPager extends ViewPager {
 		}
 	}
 
-	protected void animateStack(View left, View right, float positionOffset, int positionOffsetPixels) {		
+	protected void animateStack(View left, View right, float positionOffset, int positionOffsetPixels) {
 		if (mState != State.IDLE) {
 			if (right != null) {
 				manageLayer(right, true);
@@ -488,24 +488,24 @@ public class JazzyViewPager extends ViewPager {
 			oldPage = getCurrentItem();
 			mState = position == oldPage ? State.GOING_RIGHT : State.GOING_LEFT;
 		}
-		boolean goingRight = position == oldPage;				
+		boolean goingRight = position == oldPage;
 		if (mState == State.GOING_RIGHT && !goingRight)
 			mState = State.GOING_LEFT;
 		else if (mState == State.GOING_LEFT && goingRight)
 			mState = State.GOING_RIGHT;
 
 		float effectOffset = isSmall(positionOffset) ? 0 : positionOffset;
-		
+
 //		mLeft = getChildAt(position);
 //		mRight = getChildAt(position+1);
 		mLeft = findViewFromObject(position);
 		mRight = findViewFromObject(position+1);
-		
+
 		if (mFadeEnabled)
 			animateFade(mLeft, mRight, effectOffset);
 		if (mOutlineEnabled)
 			animateOutline(mLeft, mRight);
-		
+
 		switch (mEffect) {
 		case Standard:
 			break;
@@ -555,11 +555,11 @@ public class JazzyViewPager extends ViewPager {
 	private boolean isSmall(float positionOffset) {
 		return Math.abs(positionOffset) < 0.0001;
 	}
-	
+
 	public void setObjectForPosition(Object obj, int position) {
 		mObjs.put(Integer.valueOf(position), obj);
 	}
-	
+
 	public View findViewFromObject(int position) {
 		Object o = mObjs.get(Integer.valueOf(position));
 		if (o == null) {
@@ -574,5 +574,10 @@ public class JazzyViewPager extends ViewPager {
 		}
 		return null;
 	}
-	
+
+	public void delObjectForPosition(int position)
+	{
+		mObjs.remove(Integer.valueOf(position));
+	}
+
 }
